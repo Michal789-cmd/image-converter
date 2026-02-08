@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Konvertor obrázků (JPG/PNG/WebP/AVIF + HEIC/TIFF/ICO)</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="wrap">
+    <header class="header">
+      <h1>Konvertor obrázků</h1>
+      <p class="muted">
+        Běží lokálně v prohlížeči (soubor nikam neuploaduješ).
+      </p>
+    </header>
+
+    <section class="card">
+      <div id="dropzone" class="dropzone" tabindex="0">
+        <div>
+          <div class="dz-title">Přetáhni sem soubory</div>
+          <div class="muted">nebo</div>
+          <label class="btn">
+            Vybrat soubory
+            <input id="fileInput" type="file" multiple hidden />
+          </label>
+          <div class="muted small">
+            Tip: Umíme i HEIC/HEIF, TIFF a ICO (přes knihovny), pokud to prohlížeč dovolí.
+          </div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="control">
+          <label for="outFormat">Výstupní formát</label>
+          <select id="outFormat"></select>
+          <div class="muted small" id="formatHint"></div>
+        </div>
+
+        <div class="control">
+          <label for="quality">Kvalita (JPG/WebP/AVIF)</label>
+          <input id="quality" type="range" min="1" max="100" value="85" />
+          <div class="muted small"><span id="qualityVal">85</span> / 100</div>
+        </div>
+
+        <div class="control">
+          <label>Resize (max delší strana)</label>
+          <input id="maxSide" type="number" min="0" step="1" placeholder="např. 1600 (0 = bez)" />
+          <div class="muted small">Zachová poměr stran.</div>
+        </div>
+
+        <div class="control">
+          <label>Průhlednost → JPG</label>
+          <select id="jpgBg">
+            <option value="255,255,255">Bílé pozadí</option>
+            <option value="0,0,0">Černé pozadí</option>
+            <option value="240,240,240">Světle šedé</option>
+          </select>
+          <div class="muted small">Platí jen při převodu do JPG.</div>
+        </div>
+
+        <div class="control">
+          <label>Metadata (EXIF)</label>
+          <select id="metadataMode">
+            <option value="strip">Odstranit metadata</option>
+            <option value="keep">Ponechat (jen JPEG → JPEG)</option>
+          </select>
+          <div class="muted small">
+            Pro PNG/WebP/AVIF se metadata v této verzi standardně zahodí.
+          </div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="clearBtn" class="btn secondary" disabled>Vymazat seznam</button>
+        <button id="convertBtn" class="btn primary" disabled>Konvertovat</button>
+        <button id="downloadZipBtn" class="btn" disabled>Stáhnout vše jako ZIP</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Seznam</h2>
+      <div id="list" class="list empty">Zatím žádné soubory.</div>
+    </section>
+
+    <footer class="footer muted small">
+      Pozn.: Animované GIF/WebP se v této verzi převedou jako statický první snímek.
+    </footer>
+  </div>
+
+  <!-- ZIP -->
+  <script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+
+  <!-- EXIF pro JPEG -->
+  <script src="https://cdn.jsdelivr.net/npm/piexifjs@1.0.6/piexif.min.js"></script>
+
+  <!-- HEIC/HEIF decode -->
+  <script src="https://cdn.jsdelivr.net/npm/heic2any@0.0.4/dist/heic2any.min.js"></script>
+
+  <!-- TIFF decode -->
+  <script src="https://cdn.jsdelivr.net/npm/utif@3.1.0/UTIF.min.js"></script>
+
+  <!-- ICO decode -->
+  <script src="https://cdn.jsdelivr.net/npm/icojs@0.19.3/dist/ico.min.js"></script>
+
+  <script src="app.js"></script>
+</body>
+</html>
